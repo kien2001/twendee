@@ -14,7 +14,9 @@ function App() {
   const [paginationArr, setPaginationArr] = useState()
   // sort function
   const sortName = (field) => {
+    // sort fullname according to alphabet
     if (field === "fullname") {
+      // asc
       if (!isAsc) {
         setIsAsc((prev) => !prev);
         setUserTable((prev) => {
@@ -30,6 +32,7 @@ function App() {
 
           return [...prev];
         });
+        // desc
       } else {
         setIsAsc((prev) => !prev);
         setUserTable((prev) => {
@@ -46,7 +49,9 @@ function App() {
           return [...prev];
         });
       }
+       // sort username according to alphabet
     } else if (field === "username") {
+      // asc
       if (!isAsc) {
         setIsAsc((prev) => !prev);
         setUserTable((prev) => {
@@ -62,6 +67,7 @@ function App() {
 
           return [...prev];
         });
+        // desc
       } else {
         setIsAsc((prev) => !prev);
         setUserTable((prev) => {
@@ -132,7 +138,7 @@ function App() {
       }
       // if userData do not divide into ten-row table
       if (subArrUser.length !== 0) {
-        listUser.push({ order: Math.floor(subArrUser[0].id / 10) + 1, groupUser: subArrUser }) 
+        listUser.push({ order: Math.floor(subArrUser[0].id / 10) + 1, groupUser: subArrUser })
       }
       console.log(listUser);
       setUserList(listUser) // set user list
