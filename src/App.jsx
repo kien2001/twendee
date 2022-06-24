@@ -4,13 +4,13 @@ import './App.css';
 function App() {
   /* A hook that allows us to get data from api in a functional component. */
   const [userData, setUserData] = useState();
-  /* A hook that allows us to create data in template with every 10 rows in a functional component. */
+  /* A hook that allows us to create data in template with every 10 users in a functional component. format: [Object1:{order: 1, groupUser: "10 users"}, Object1:{order: 2, groupUser: "10 users next"},...] */
   const [userList, setUserList] = useState();
-  /* A hook that allows us to create table user with 10 rows in a functional component. */
+  /* A hook that allows us to create table user with 10 rows in a functional component. format: [Object1:{id: 1, user: user1}, Object2:{id: 2, user: user2}] */
   const [userTable, setUserTable] = useState();
   // check asc sort
   const [isAsc, setIsAsc] = useState(false);
-  // pagination
+  // length pagination
   const [paginationArr, setPaginationArr] = useState()
   // sort function
   const sortName = (field) => {
@@ -87,13 +87,14 @@ function App() {
     if (userList.length !== 0) {
       const order = +e.target.innerHTML - 1;
       setUserTable(userList[order].groupUser)
+      console.log(userList[order].groupUser);
     }
     document.querySelectorAll(".active")[0].classList.remove("active");
     e.target.classList.add("active")
   }
   /* This is a function that gets data from api and set data to userData. */
   useEffect(() => {
-    fetch("https://randomuser.me/api/?results=101")
+    fetch("https://randomuser.me/api/?results=100")
       .then(result => {
         return result.json();
       })
@@ -119,8 +120,8 @@ function App() {
   // handle data table
   useEffect(() => {
     if (userData) {
-      let listUser = []; // save list user in template :
-      var subArrUser = [];
+      let listUser = []; // save list user 
+      let subArrUser = []; // save user, if equal 10, push into listUser then reset
       // create
       for (let i = 0; i < userData.length; i++) {
         subArrUser.push({ id: i, user: userData[i] }) // save every 10 row into an arr
@@ -129,9 +130,11 @@ function App() {
           subArrUser = [] // reset arr
         }
       }
+      // if userData do not divide into ten-row table
       if (subArrUser.length !== 0) {
-        listUser.push({ order: Math.floor(subArrUser[0].id / 10) + 1, groupUser: subArrUser }) // if userData do not divide into ten-row table
+        listUser.push({ order: Math.floor(subArrUser[0].id / 10) + 1, groupUser: subArrUser }) 
       }
+      console.log(listUser);
       setUserList(listUser) // set user list
       setUserTable(listUser[0].groupUser) // set default data table
     }
@@ -166,7 +169,6 @@ function App() {
           return <span key={index} onClick={handleClick}>{item}</span>
         })}
       </div>
-
     </div>
   );
 }
